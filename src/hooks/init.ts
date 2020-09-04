@@ -35,9 +35,7 @@ export const init: Config.Hook<'init'> = async function (opts) {
   async function autoupdateNeeded(): Promise<boolean> {
     try {
       const m = await mtime(autoupdatefile)
-      let days = 1
-      if (opts.config.channel === 'stable') days = 14
-      m.setHours(m.getHours() + (days * 24))
+      m.setMinutes(m.getMinutes() + 1)
       return m < new Date()
     } catch (error) {
       if (error.code !== 'ENOENT') cli.error(error.stack)
