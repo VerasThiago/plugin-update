@@ -18,6 +18,7 @@ async function mtime(f: string) {
 }
 
 export const init: Config.Hook<'init'> = async function (opts) {
+  console.log('Hook init running2...')
   if (opts.id === 'update') return
   if (opts.config.scopedEnvVarTrue('DISABLE_AUTOUPDATE')) return
   const binPath = this.config.binPath || this.config.bin
@@ -35,7 +36,7 @@ export const init: Config.Hook<'init'> = async function (opts) {
   async function autoupdateNeeded(): Promise<boolean> {
     try {
       const m = await mtime(autoupdatefile)
-      m.setMinutes(m.getMinutes() + 1)
+      m.setSeconds(m.getSeconds() + 1)
       return m < new Date()
     } catch (error) {
       if (error.code !== 'ENOENT') cli.error(error.stack)

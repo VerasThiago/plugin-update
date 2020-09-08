@@ -29,6 +29,7 @@ export default class UpdateCommand extends Command {
   private readonly clientBin = path.join(this.clientRoot, 'bin', this.config.windows ? `${this.config.bin}.cmd` : this.config.bin)
 
   async run() {
+    console.log('Command Update Running...')
     const {args, flags} = this.parse(UpdateCommand)
     this.autoupdate = Boolean(flags.autoupdate)
 
@@ -38,7 +39,9 @@ export default class UpdateCommand extends Command {
     this.channel = args.channel || this.config.channel || 'stable'
     await this.config.runHook('preupdate', {channel: this.channel})
     const manifest = await this.fetchManifest()
+    console.log('Manifes = ', manifest)
     const reason = await this.skipUpdate()
+    console.log('Reason = ', reason )
     if (reason) cli.action.stop(reason || 'done')
     else await this.update(manifest)
     this.debug('tidy')
@@ -49,6 +52,7 @@ export default class UpdateCommand extends Command {
   }
 
   private async fetchManifest(): Promise<IManifest> {
+    console.log('fetchManifest called')
     const http: typeof HTTP = require('http-call').HTTP
     try {
       const url = this.config.s3Url(this.config.s3Key('manifest', {
@@ -56,6 +60,7 @@ export default class UpdateCommand extends Command {
         platform: this.config.platform,
         arch: this.config.arch,
       }))
+      console.log('Making request to ', url)
       const {body} = await http.get<IManifest | string>(url)
 
       // in case the content-type is not set, parse as a string
@@ -71,6 +76,7 @@ export default class UpdateCommand extends Command {
   }
 
   private async update(manifest: IManifest) {
+    console.log('Update called')
     const {version, channel} = manifest
     cli.action.start(`${this.config.name}: Updating CLI from ${color.green(this.config.version)} to ${color.green(version)}${channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'}`)
     const http: typeof HTTP = require('http-call').HTTP
@@ -161,7 +167,7 @@ export default class UpdateCommand extends Command {
     let output = false
     const lastrunfile = path.join(this.config.cacheDir, 'lastrun')
     const m = await this.mtime(lastrunfile)
-    m.setMinutes(m.getMinutes() + 1)
+    m.setSeconds(m.getSeconds() + 1)
     if (m > new Date()) {
       const msg = `waiting until ${m.toISOString()} to update`
       if (output) {
