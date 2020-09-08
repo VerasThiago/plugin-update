@@ -1,6 +1,6 @@
 {
   "name": "@thiagoveras/plugin-update",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Thiago Veras @thiagoveras",
   "bugs": "https://github.com/VerasThiago/plugin-update/issues",
   "dependencies": {
