@@ -161,7 +161,7 @@ export default class UpdateCommand extends Command {
     let output = false
     const lastrunfile = path.join(this.config.cacheDir, 'lastrun')
     const m = await this.mtime(lastrunfile)
-    m.setHours(m.getHours() + 1)
+    m.setMinutes(m.getMinutes() + 1)
     if (m > new Date()) {
       const msg = `waiting until ${m.toISOString()} to update`
       if (output) {

@@ -1,0 +1,1 @@
+{"version":"0.0.0","commands":{"update":{"id":"update","description":"update the <%= config.bin %> CLI","pluginName":"@thiagoveras/plugin-update","pluginType":"core","aliases":[],"flags":{"autoupdate":{"name":"autoupdate","type":"boolean","hidden":true,"allowNo":false}},"args":[{"name":"channel"}]}}}
