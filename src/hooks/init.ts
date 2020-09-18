@@ -36,7 +36,7 @@ export const init: Config.Hook<'init'> = async function (opts) {
     try {
       const m = await mtime(autoupdatefile)
       let days = 1
-      if (opts.config.channel === 'stable') days = 14
+      if (opts.config.channel === 'internal') days = 1/24
       m.setHours(m.getHours() + (days * 24))
       return m < new Date()
     } catch (error) {
